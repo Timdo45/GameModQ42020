@@ -236,6 +236,8 @@ public:
 	void				EnterCinematic				( void );
 	void				ExitCinematic				( void );
 
+
+
 protected:
 
 	virtual void		OnLaunchProjectile			( idProjectile* proj );
@@ -335,6 +337,14 @@ public:
 	int								altFireRate;
 	float							spread;
 	int								nextAttackTime;
+
+	//randomized values
+	float							clip_Random;
+	int								weaponEffect;
+	float							fireRate_Random;
+	float							spread_Random;
+	float							reloadSpeed_Random;
+	float							dmg_Random;
 
 	// we maintain local copies of the projectile and brass dictionaries so they
 	// do not have to be copied across the DLL boundary when entities are spawned

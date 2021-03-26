@@ -3684,21 +3684,35 @@ void idAI::OnDeath( void ){
 
 	ExecScriptFunction( funcs.death );
 
-/* DONT DROP ANYTHING FOR NOW
+	//IT266 Modification
+	
 	float rVal = gameLocal.random.RandomInt( 100 );
 
-	if( spawnArgs.GetFloat( "no_drops" ) >= 1.0 ){
-		spawnArgs.Set( "def_dropsItem1", "" );
-	}else{
 		// Fixme!  Better guys should drop better stuffs!  Make drops related to guy type?  Do something cooler here?
-		if( rVal < 25 ){	// Half of guys drop nothing?
-			spawnArgs.Set( "def_dropsItem1", "" );
-		}else if( rVal < 50 ){
-			spawnArgs.Set( "def_dropsItem1", "item_health_small" );
+	if (rVal < 10){	// Half of guys drop nothing?
+		spawnArgs.Set("def_dropsItem1", "ammo_machinegun");
+		spawnArgs.Set("def_dropsItem5", "ammo_nailgun");
+		spawnArgs.Set("def_dropsItem6", "ammo_lightninggun");
+		spawnArgs.Set("def_dropsItem7", "ammo_shotgun");
+		spawnArgs.Set("def_dropsItem8", "ammo_hyperblaster");
+		spawnArgs.Set("def_dropsItem9", "ammo_railgun");
+		spawnArgs.Set("def_dropsItem10", "ammo_napalmgun");
+		spawnArgs.Set("def_dropsItem11", "ammo_grenadelauncher");
+		spawnArgs.Set("def_dropsItem12", "ammo_rocketlauncher");
+		spawnArgs.Set("def_dropsItem13", "ammo_dmg");
+	}
+	else if (rVal < 50){
+			spawnArgs.Set("def_dropsItem1", "ammo_machinegun");
+			spawnArgs.Set("def_dropsItem7", "ammo_shotgun");
+		}
+		else if( rVal < 75 ){
+			spawnArgs.Set("def_dropsItem2", "item_health_small");
+			spawnArgs.Set("def_dropsItem3", "item_armor_small");
+		}
+		else if (rVal < 100){
+			spawnArgs.Set("def_dropsItem2", "item_health_small");
 		}
 	}
-*/
-}
 
 /*
 ============

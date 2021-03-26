@@ -529,6 +529,9 @@ void rvWeapon::Init( idPlayer* _owner, const idDeclEntityDef* def, int _weaponIn
 	
 	spawnArgs = weaponDef->dict;
 
+	//IT266 Modification
+	 fireRate_Random = gameLocal.random.RandomInt( 100 );
+
 #ifdef _XENON
 	aimAssistFOV = spawnArgs.GetFloat( "aimAssistFOV", "10.0f" );
 #endif	
@@ -622,13 +625,24 @@ void rvWeapon::Spawn ( void ) {
 	weaponAngleOffsetMax		= spawnArgs.GetFloat( "weaponAngleOffsetMax", "10" );
 	weaponOffsetTime			= spawnArgs.GetFloat( "weaponOffsetTime", "400" );
 	weaponOffsetScale			= spawnArgs.GetFloat( "weaponOffsetScale", "0.005" );
+	//IT266 random variables defined
+	fireRate_Random = gameLocal.random.RandomFloat();
+	if (fireRate_Random >= 0.5){
+		fireRate_Random == 0.5f;
+	}
+	clip_Random = gameLocal.random.RandomInt(50);
+	spread_Random = gameLocal.random.RandomInt(5);
+	int randomadd = gameLocal.random.RandomInt(1);
+	if (randomadd == 0){
+		spread_Random -= 2 * spread_Random;
+	}
 
-	fireRate	= SEC2MS ( spawnArgs.GetFloat ( "fireRate" ) );
-	altFireRate	= SEC2MS ( spawnArgs.GetFloat ( "altFireRate" ) );
+	fireRate = SEC2MS(  fireRate_Random); //IT266 replaced firerate with random number
+	altFireRate	= SEC2MS ( spawnArgs.GetFloat ( "altFireRate" ) - fireRate_Random );
 	if( altFireRate == 0 ) {
 		altFireRate = fireRate;
 	}
-	spread		= (gameLocal.IsMultiplayer()&&spawnArgs.FindKey("spread_mp"))?spawnArgs.GetFloat ( "spread_mp" ):spawnArgs.GetFloat ( "spread" );
+	spread		= (gameLocal.IsMultiplayer()&&spawnArgs.FindKey("spread_mp"))?spawnArgs.GetFloat ( "spread_mp" ):spawnArgs.GetFloat ( "spread" ) + spread_Random;
 	nextAttackTime = 0;
 
 	// Zoom
@@ -653,7 +667,7 @@ void rvWeapon::Spawn ( void ) {
  	muzzleOffset		= weaponDef->dict.GetFloat ( "muzzleOffset", "14" );
 
 	// Ammo
-	clipSize			= spawnArgs.GetInt( "clipSize" );
+	clipSize			= spawnArgs.GetInt( "clipSize" ) + clip_Random; //IT266 added random clip size
 	ammoRequired		= spawnArgs.GetInt( "ammoRequired" );
 	lowAmmo				= spawnArgs.GetInt( "lowAmmo" );
 	ammoType			= GetAmmoIndexForName( spawnArgs.GetString( "ammoType" ) );
@@ -2156,6 +2170,7 @@ for ( g = 0; g < MAX_RENDERENTITY_GUI && viewModel->GetRenderEntity()->gui[g]; g
 		// show remaining ammo
 		if ( gui->State().GetInt ( "player_cachedammo", "-1") != ammo ) {
 			gui->SetStateInt ( "player_ammo", ammo );
+
 			
 			if ( ClipSize ( ) ) {
 				gui->SetStateFloat ( "player_ammopct", (float)ammo / (float)ClipSize() );
@@ -2361,6 +2376,8 @@ int rvWeapon::AmmoAvailable( void ) const {
 	}
 }
 
+
+
 /*
 ================
 rvWeapon::AmmoInClip
@@ -2408,6 +2425,7 @@ rvWeapon::LowAmmo
 int	rvWeapon::LowAmmo() const {
 	return lowAmmo;
 }
+
 
 /*
 ================

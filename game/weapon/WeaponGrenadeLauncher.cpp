@@ -14,7 +14,7 @@ public:
 	virtual void			Spawn				( void );
 	void					PreSave				( void );
 	void					PostSave			( void );
-
+	bool					reload_grenade;
 #ifdef _XENON
 	virtual bool		AllowAutoAim			( void ) const { return false; }
 #endif
@@ -172,7 +172,7 @@ stateResult_t rvWeaponGrenadeLauncher::State_Reload ( const stateParms_t& parms 
 	enum {
 		STAGE_INIT,
 		STAGE_WAIT,
-	};	
+	};
 	switch ( parms.stage ) {
 		case STAGE_INIT:
 			if ( wsfl.netReload ) {
@@ -183,6 +183,7 @@ stateResult_t rvWeaponGrenadeLauncher::State_Reload ( const stateParms_t& parms 
 			
 			SetStatus ( WP_RELOAD );
 			PlayAnim ( ANIMCHANNEL_ALL, "reload", parms.blendFrames );
+
 			return SRESULT_STAGE ( STAGE_WAIT );
 			
 		case STAGE_WAIT:

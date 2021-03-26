@@ -3652,8 +3652,7 @@ void idEntity::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &di
 	if ( !damageDef ) {
 		gameLocal.Error( "Unknown damageDef '%s'\n", damageDefName );
 	}
-
-	int	damage = damageDef->GetInt( "damage" );
+	int	damage = damageDef->GetInt("damage")+damage_Random;
 
 	// inform the attacker that they hit someone
 	attacker->DamageFeedback( this, inflictor, damage );

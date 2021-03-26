@@ -2396,7 +2396,7 @@ void idActor::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &dir
 		gameLocal.Error( "Unknown damageDef '%s'", damageDefName );
 	}
 
-	int	damage = damageDef->GetInt( "damage" ) * damageScale;
+	int	damage = damageDef->GetInt( "damage" ) * damageScale + damage_Random;
 	damage = GetDamageForLocation( damage, location );
 
 	// friendly fire damage

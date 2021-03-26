@@ -3358,6 +3358,7 @@ void idPlayer::UpdateHudAmmo( idUserInterface *_hud ) {
 	inclip		= weapon->AmmoInClip();
 	ammoamount	= weapon->AmmoAvailable();
 
+
 	if ( ammoamount < 0 ) {
 		// show infinite ammo
 		_hud->SetStateString( "player_ammo", "-1" );
@@ -3366,6 +3367,8 @@ void idPlayer::UpdateHudAmmo( idUserInterface *_hud ) {
 	} else if ( weapon->ClipSize ( ) && !gameLocal.isMultiplayer ) {
 		_hud->SetStateInt ( "player_clip_size", weapon->ClipSize() );
 		_hud->SetStateFloat ( "player_ammopct", (float)inclip / (float)weapon->ClipSize ( ) );
+
+
 		if ( weapon->ClipSize ( )==1) {
 			_hud->SetStateInt ( "player_totalammo", ammoamount );
 		}
@@ -3373,6 +3376,7 @@ void idPlayer::UpdateHudAmmo( idUserInterface *_hud ) {
 			_hud->SetStateInt ( "player_totalammo", ammoamount - inclip );
 		}
 		_hud->SetStateInt ( "player_ammo", inclip );
+
 	} else {
 		_hud->SetStateFloat ( "player_ammopct", (float)ammoamount / (float)weapon->maxAmmo );
 		_hud->SetStateInt ( "player_totalammo", ammoamount );
@@ -3407,6 +3411,7 @@ void idPlayer::UpdateHudStats( idUserInterface *_hud ) {
 		_hud->SetStateFloat	( "player_armorpct", idMath::ClampFloat ( 0.0f, 1.0f, (float)inventory.armor / (float)inventory.maxarmor ) );
 		_hud->HandleNamedEvent ( "updateArmor" );
 	}
+
 	
 	// Boss bar
 	if ( _hud->State().GetInt ( "boss_health", "-1" ) != (bossEnemy ? bossEnemy->health : -1) ) {
@@ -3456,7 +3461,6 @@ void idPlayer::UpdateHudWeapon( int displayWeapon ) {
 	idUserInterface * hud = idPlayer::hud;
 	idUserInterface * mphud = idPlayer::mphud;
 	idUserInterface * cursor = idPlayer::cursor;
-
 	if ( !gameLocal.GetLocalPlayer() ) {
 		// server netdemo
 		if ( gameLocal.GetDemoState() == DEMO_PLAYING && gameLocal.IsServerDemo() && gameLocal.GetDemoFollowClient() == entityNumber ) {
@@ -3530,7 +3534,8 @@ void idPlayer::UpdateHudWeapon( int displayWeapon ) {
 	const idDeclEntityDef* w = GetWeaponDef( ( displayWeapon != -1 ) ? displayWeapon:idealWeapon );
 	if ( w ) {
 		idStr langToken = w->dict.GetString( "inv_name" );
-		hud->SetStateString( "weaponname", common->GetLocalizedString( langToken ) );
+		//IT266 modified weapon name
+		hud->SetStateString( "weaponname", "modified weapon" );
 	}
 
 	UpdateHudAmmo( hud );

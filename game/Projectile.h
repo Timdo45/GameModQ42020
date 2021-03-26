@@ -81,6 +81,9 @@ protected:
 
 	float					damagePower;
 
+	//IT266 Modification damage randomizer
+
+
 	renderLight_t			renderLight;
 	qhandle_t				lightDefHandle;				// handle to renderer light def
 	idVec3					lightOffset;
